@@ -1,26 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
-
 metadata:
   name: nginx
   namespace: dev
-
 spec:
-  replicas: 2
-
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
-
   template:
     metadata:
       labels:
         app: nginx
-
     spec:
+      nodeSelector:
+        env: dev
+
+      tolerations:
+      - key: "env"
+        operator: "Equal"
+        value: "dev"
+        effect: "NoSchedule"
+
       containers:
       - name: nginx
-        image: nginx:latest
-
-        ports:
-        - containerPort: 80
+        image: nginx

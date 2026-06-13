@@ -3,7 +3,7 @@ kind: Deployment
 
 metadata:
   name: worker-nginx
-  namespace: dev
+  namespace: uat
 
 spec:
   replicas: 2
@@ -19,7 +19,12 @@ spec:
 
     spec:
       nodeSelector:
-        node-type: worker
+        env: uat
+      tolerations:
+      - key: "env"
+        operator: "Equal"
+        value: "uat"
+        effect: "NoSchedule"
 
       containers:
       - name: nginx
